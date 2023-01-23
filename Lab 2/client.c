@@ -10,18 +10,32 @@ void main()
     char str[30], res[40];
     int connected_socket;
     connected_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (connected_socket == -1)
+    {
+        printf("Could not create socket");
+    }
     printf("Enter a string to check for palindrome: ");
-    fgets(str, 30, stdin);
+    scanf("%s", str);
     server.sin_family = AF_INET;
-    server.sin_addr.s_addr = htons(INADDR_ANY);
+    server.sin_addr.s_addr = inet_addr("127.0.0.1");
     server.sin_port = htons(9000);
-    printf("Connecting to server...\n");
-    connect(connected_socket, &server, sizeof(server));
-    printf("Connected\n");
+
+    if (connect(connected_socket, (struct sockaddr *)&server, sizeof(server)) < 0)
+    {
+        perror("connect failed. Error");
+        return 1;
+    }
     printf("Sending string to server...\n");
-    send(connected_socket, &str, sizeof(str), 0);
+    if (send(connected_socket, str, strlen(str), 0) < 0)
+    {
+        printf("Send failed");
+        return 1;
+    }
     printf("waiting for response...\n");
-    recv(connected_socket, &res, sizeof(res), 0);
+    if (recv(connected_socket, &res, sizeof(res), 0) < 0)
+    {
+        printf("recv failed");
+    }
     printf("Result: %s\n", res);
     printf("Closing connection...\n");
     close(connected_socket);
