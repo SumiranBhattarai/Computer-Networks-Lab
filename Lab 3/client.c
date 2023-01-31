@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/socket.h>
+
+void main()
+{
+    struct sockaddr_in server, client;
+    int array[100];
+    int n, i;
+    int connected_socket;
+    char str[30];
+    printf("Enter the number of elements in the array: ");
+    scanf("%d", &n);
+
+    // Read elements of the array from user
+    for (i = 1; i < n + 1; i++)
+    {
+        printf("Enter element %d: ", i);
+        scanf("%d", &array[i]);
+    }
+    connected_socket = socket(AF_INET, SOCK_STREAM, 0);
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = htons(INADDR_ANY);
+    server.sin_port = 6000;
+    connect(connected_socket, (const struct sockaddr *)&server, sizeof(server));
+    send(connected_socket, &n, sizeof(n), 0);
+    send(connected_socket, array, sizeof(array), 0);
+    close(connected_socket);
+}

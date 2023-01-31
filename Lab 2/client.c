@@ -20,7 +20,7 @@ void main()
     server.sin_addr.s_addr = inet_addr("127.0.0.1");
     server.sin_port = htons(9000);
 
-    if (connect(connected_socket, (struct sockaddr *)&server, sizeof(server)) < 0)
+    if (connect(connected_socket, &server, sizeof(server)) < 0)
     {
         perror("connect failed. Error");
         return 1;
