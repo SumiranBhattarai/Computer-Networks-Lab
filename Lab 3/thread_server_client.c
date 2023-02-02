@@ -47,4 +47,4 @@ int main()
         pthread_create(&client_thread, NULL, handle_client, &client_socket);
     }
     close(server_socket);
-}
+}#de
