@@ -7,7 +7,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
-
+#include <ctype.h>
 #define PORT 8001
 #define MAXLINE 1024
 
@@ -18,7 +18,6 @@ int main()
     char buffer[MAXLINE];
     char result[30];
     struct sockaddr_in servaddr, cliaddr;
-    int i, count = 0;
     // Creating socket file descriptor
     if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
     {
@@ -48,27 +47,34 @@ int main()
     n = recvfrom(sockfd, (char *)buffer, MAXLINE,
                  MSG_WAITALL, (struct sockaddr *)&cliaddr,
                  &len);
-    buffer[n] = '\0';
+    // buffer[n] = '\0';
 
     printf("Client request: %s", buffer);
     // extract numbers from buffer
-    int arr[30];
+
+    int arr[n];
+    int i, j, k = 0;
     int sum = 0;
+    int count = 0;
+    int temp = 0;
+
     for (i = 0; i < n; i++)
     {
-        if (buffer[i] == ' ')
+        if (isdigit(buffer[i]))
         {
-            continue;
+            temp = temp * 10 + (buffer[i] - '0');
         }
         else
         {
-            arr[i] = buffer[i] - 48;
-            printf("\n%d ", arr[i]);
-            sum = sum + arr[i];
-            count++;
+            arr[k++] = temp;
+            sum += temp;
+            temp = 0;
         }
     }
-    printf("\nAverage is %f\n", (float)sum / count);
+    arr[k++] = temp;
+    sum += temp;
+
+    printf("\nAverage is %f\n", (float)sum / k);
 
     sendto(sockfd, (const char *)result, strlen(result),
            MSG_CONFIRM, (const struct sockaddr *)&cliaddr,

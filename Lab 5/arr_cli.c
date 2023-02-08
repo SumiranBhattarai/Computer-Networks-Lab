@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-#define PORT 8000
+#define PORT 8001
 #define MAXLINE 1024
 
 // Driver code
@@ -17,7 +17,8 @@ int main()
     int sockfd;
     char buffer[MAXLINE];
     // char message[30] = {'1', '2', '3', '4'};
-    char *message = "1 2 3 45";
+    // char *message = "1 2 3 45";
+    char message[30];
     struct sockaddr_in servaddr;
 
     // Creating socket file descriptor
@@ -35,12 +36,13 @@ int main()
     servaddr.sin_addr.s_addr = INADDR_ANY;
 
     int n, len;
-    // printf("\nEnter a String: ");
-    // scanf("%s", message);
+    printf("\nEnter numbers: ");
+    gets(message);
+    printf("\nMessage: %s", message);
     sendto(sockfd, (const char *)message, strlen(message),
            MSG_CONFIRM, (const struct sockaddr *)&servaddr,
            sizeof(servaddr));
-    printf("Request sent.\n");
+    printf("\nRequest sent.\n");
 
     n = recvfrom(sockfd, (char *)buffer, MAXLINE,
                  MSG_WAITALL, (struct sockaddr *)&servaddr,
