@@ -68,8 +68,9 @@ int main()
             count++;
         }
     }
-    printf("\nAverage is %f\n", (float)sum / count);
-
+    float res = (float)sum / count;
+    sprintf(result, "%f", res);
+    printf("\nAverage is %f\n", res);
     sendto(sockfd, (const char *)result, strlen(result),
            MSG_CONFIRM, (const struct sockaddr *)&cliaddr,
            len);

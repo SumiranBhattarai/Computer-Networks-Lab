@@ -73,9 +73,9 @@ int main()
     }
     arr[k++] = temp;
     sum += temp;
-
-    printf("\nAverage is %f\n", (float)sum / k);
-
+    float res = (float)sum / k;
+    sprintf(result, "%f", res);
+    printf("\nAverage is %f\n", res);
     sendto(sockfd, (const char *)result, strlen(result),
            MSG_CONFIRM, (const struct sockaddr *)&cliaddr,
            len);

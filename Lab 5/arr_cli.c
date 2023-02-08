@@ -48,7 +48,7 @@ int main()
                  MSG_WAITALL, (struct sockaddr *)&servaddr,
                  &len);
     buffer[n] = '\0';
-    printf("Server's response: %s\n", buffer);
+    printf("Average of the numbers is: %s\n", buffer);
 
     close(sockfd);
     return 0;
